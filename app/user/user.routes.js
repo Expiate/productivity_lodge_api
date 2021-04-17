@@ -6,6 +6,7 @@ const router = express.Router()
 // Nested Router to Signup
 router.use('/signup', signRouter)
 
+// Get All Users Route
 router.route('/').get(userController.getAll)
 
 module.exports = router

@@ -1,5 +1,8 @@
 const mongoose = require('mongoose')
 
+/**
+ * This Function creates a connection to MongoDB
+ */
 module.exports.connectDatabase = () => {
     mongoose.connect(process.env.DATABASE_URL, {
         useNewUrlParser: true,
