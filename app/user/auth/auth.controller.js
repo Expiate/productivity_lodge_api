@@ -7,6 +7,14 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("../../services/nodemailer.service")
 
+/**
+ * This Async Function tries to find a User that has the same email as the one provided in the req param, then if it does not match with anyone
+ * proceeds to create a new user holding the information provided in the req param to save it into the DB
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns JSON
+ */
 exports.signup = async(req, res) => {
     let user
     try {

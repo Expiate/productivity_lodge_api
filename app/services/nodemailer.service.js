@@ -12,6 +12,14 @@ const transport = nodemailer.createTransport({
     },
 });
 
+/**
+ * This Function will use the Email specified in the transport constant to send a confirmation email to the email provided in the params that holds 
+ * the confirmationCode provided in the params as well
+ * 
+ * @param {*} name 
+ * @param {*} email 
+ * @param {*} confirmationCode 
+ */
 module.exports.sendConfirmationEmail = (name, email, confirmationCode) => {
     transport.sendMail({
         from: user,
