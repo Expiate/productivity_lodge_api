@@ -1,11 +1,6 @@
-// TODO Check if useless
-const { config } = require("dotenv/types");
-
-config()
-
 const User = require("../user.model")
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const nodemailer = require("../../services/nodemailer.service")
 
 /**
@@ -16,7 +11,7 @@ const nodemailer = require("../../services/nodemailer.service")
  * @param {*} res 
  * @returns JSON
  */
-exports.signup = async(req, res) => {
+module.exports.signup = async(req, res) => {
     let user
     try {
         if (user = await User.findOne({ 'email': req.body.email }) != null) return res.status(400).json({ message: 'There is already an Account using that email' })
@@ -60,7 +55,7 @@ exports.signup = async(req, res) => {
  * @param {*} res 
  * @returns JSON
  */
-exports.verifyUser = async(req, res) => {
+module.exports.verifyUser = async(req, res) => {
     let user
     try {
         user = await User.findOne({ 'confirmationCode': req.params.confirmationCode })
