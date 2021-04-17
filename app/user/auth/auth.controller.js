@@ -39,7 +39,7 @@ exports.signup = async(req, res) => {
             )
         })
     } catch(err) {
-        res.status(400).json({ message: err.message })
+        return res.status(400).json({ message: err.message })
     }
 }
 
