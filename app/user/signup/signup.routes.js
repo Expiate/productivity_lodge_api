@@ -5,6 +5,6 @@ const router = express.Router()
 // Signup Route
 router.route('/').post(signController.signup)
 // Signup Confirmation Route
-router.route('/confirm/:confirmationCode').post(signController.verifyUser)
+router.route('/confirm').post(signController.verifyUser)
 
 module.exports = router
