@@ -21,8 +21,21 @@ const userSchema = new mongoose.Schema({
     confirmationCode: {
         type: String,
         unique: true
+    },
+    registerDate: {
+        type: Date,
+        default: Date.now
+    },
+    preferences: {
+        colors: [String],
+        topics: [String],
+        hours_max: {
+            type: Number,
+            min: 0,
+            max: 24,
+            default: 16
+        }
     }
-    
 })
 
 module.exports = mongoose.model('User', userSchema)
