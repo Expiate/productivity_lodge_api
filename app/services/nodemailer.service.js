@@ -1,7 +1,3 @@
-const { config } = require("dotenv/types");
-
-config()
-
 const nodemailer = require("nodemailer");
 
 const transport = nodemailer.createTransport({
@@ -22,7 +18,7 @@ const transport = nodemailer.createTransport({
  */
 module.exports.sendConfirmationEmail = (name, email, confirmationCode) => {
     transport.sendMail({
-        from: user,
+        from: process.env.MAIL_USER,
         to: email,
         subject: "Please confirm your account",
         html: `<h1>Email Confirmation</h1>
