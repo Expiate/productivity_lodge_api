@@ -2,7 +2,7 @@
   "name": "productivity_lodge_api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "devStart": "nodemon server.js"
   },
