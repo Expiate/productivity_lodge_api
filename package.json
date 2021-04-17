@@ -2,12 +2,12 @@
   "name": "productivity_lodge_api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "devStart": "nodemon server.js"
   },
-  "keywords": [],
-  "author": "ExpiateDev",
+  "keywords": ["ProductivityLodge", "API", "RestFullAPI"],
+  "author": "Expiate",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
