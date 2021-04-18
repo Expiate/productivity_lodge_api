@@ -4,6 +4,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 
+
 // MongoDB Connection
 require('./mongoDB').connectDatabase()
 
@@ -11,7 +12,7 @@ require('./mongoDB').connectDatabase()
 app.use(express.json())
 
 // Load all the Routes and Middleware
-require('./app/middleware/log.middleware').log(app)
+require('./app/middleware/middlewareLoader').loadMiddleware(app)
 require('./routes').loadRoutes(app)
 // Set Connection Whitelist to false
 app.use(cors())
