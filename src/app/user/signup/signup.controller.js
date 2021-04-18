@@ -2,6 +2,7 @@ const User = require("../user.model")
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const nodemailer = require("../../services/nodemailer.service")
+const NODE_ENV = process.env.NODE_ENV
 
 /**
  * This Async Function tries to find a User that has the same email as the one provided in the req param, then if it does not match with anyone
@@ -36,11 +37,14 @@ module.exports.signup = async(req, res) => {
 
             res.status(201).json({ message: "User was registered successfully! Please check your email to activate your Account"})
 
-            nodemailer.sendConfirmationEmail(
-                user.username,
-                user.email,
-                user.confirmationCode
-            )
+            if(NODE_ENV !== 'test') {
+                nodemailer.sendConfirmationEmail(
+                    user.username,
+                    user.email,
+                    user.confirmationCode
+                )
+            }
+
         })
     } catch(err) {
         return res.status(400).json({ message: err.message })
