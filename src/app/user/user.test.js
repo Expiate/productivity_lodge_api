@@ -70,6 +70,7 @@ beforeEach(async () => {
 })
 
 describe('User generic tests', () => {
+    // TODO Determine an Access Type Dev or User
     test('users are returned as json', async () => {
         const response = await api
             .get('/users')
