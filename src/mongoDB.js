@@ -1,10 +1,13 @@
 const mongoose = require('mongoose')
 
+const { DATABASE_URL, DATABASE_URL_TEST, NODE_ENV } = process.env
+const connectionString = NODE_ENV === 'test' ? DATABASE_URL_TEST : DATABASE_URL
+
 /**
  * This Function creates a connection to MongoDB
  */
 module.exports.connectDatabase = () => {
-    mongoose.connect(process.env.DATABASE_URL, {
+    mongoose.connect(connectionString, {
         useNewUrlParser: true,
         useCreateIndex: true,
         useUnifiedTopology: true
