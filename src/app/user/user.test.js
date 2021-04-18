@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const { app, server } = require('../../server')
 const User = require('./user.model')
+const bcrypt = require('bcrypt')
 
 const api = supertest(app)
 
@@ -31,7 +32,7 @@ const usersToSignup = [
     {
         username: 'Expiate',
         email: 'Tuetano32@gmail.com',
-        password: 'supermega14',
+        password: 'supermega15',
     }
 ]
 
@@ -105,6 +106,18 @@ describe('Signup User tests', () => {
             .expect(400)
             .expect('Content-Type', /application\/json/)
         expect(response.body).toStrictEqual({ "message": "There is already an Account using that email"})
+    })
+
+    test('passwords are being encrypted correctly', async () => {
+        const response = await api
+            .post('/users/signup')
+            .send(usersToSignup[0])
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+
+        const userFromDB = await User.findOne({ email: usersToSignup[0].email })
+
+        expect(bcrypt.compareSync(usersToSignup[0].password, userFromDB.password)).toBe(true)
     })
 })
 
