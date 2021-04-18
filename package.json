@@ -2,9 +2,9 @@
   "name": "productivity_lodge_api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "devStart": "nodemon server.js"
+    "devStart": "nodemon src/server.js"
   },
   "keywords": ["ProductivityLodge", "API", "RestFullAPI"],
   "author": "Expiate",
