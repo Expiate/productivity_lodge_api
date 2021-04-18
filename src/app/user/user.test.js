@@ -6,10 +6,13 @@ const bcrypt = require('bcrypt')
 
 const api = supertest(app)
 
+const initialUser3UnhashedPassword = 'supermega15'
+const initialUser4UnhashedPassword = 'supermega16'
+
 const initialUsers = [
     {
         username: 'Expiate',
-        email: 'Tuetano32@gmail.com',
+        email: 'tuetano32@gmail.com',
         password: 'supermega14',
         confirmationCode: '1',
         status: 'Pending'
@@ -20,6 +23,20 @@ const initialUsers = [
         password: 'supermega15',
         confirmationCode: '2',
         status: 'Active'
+    },
+    {
+        username: 'Mr Ejemplo',
+        email: 'ejemplo@gmail.com',
+        password: bcrypt.hashSync(initialUser3UnhashedPassword, 10),
+        confirmationCode: '3',
+        status: 'Active'
+    },
+    {
+        username: 'Jim',
+        email: 'jim@gmail.com',
+        password: bcrypt.hashSync(initialUser4UnhashedPassword, 10),
+        confirmationCode: '4',
+        status: 'Pending'
     }
 ]
 
@@ -31,7 +48,7 @@ const usersToSignup = [
     },
     {
         username: 'Expiate',
-        email: 'Tuetano32@gmail.com',
+        email: 'tuetano32@gmail.com',
         password: 'supermega15',
     }
 ]
@@ -44,6 +61,12 @@ beforeEach(async () => {
 
     const user2 = new User(initialUsers[1])
     await user2.save()
+
+    const user3 = new User(initialUsers[2])
+    await user3.save()
+
+    const user4 = new User(initialUsers[3])
+    await user4.save()
 })
 
 describe('User generic tests', () => {
@@ -118,6 +141,58 @@ describe('Signup User tests', () => {
         const userFromDB = await User.findOne({ email: usersToSignup[0].email })
 
         expect(bcrypt.compareSync(usersToSignup[0].password, userFromDB.password)).toBe(true)
+    })
+})
+
+describe('Login User tests', () => {
+    test('login method generates and sents an jwt when email and password matches and the account is activated', async () => {
+        const response = await api
+            .post('/users/login')
+            .send({
+                email: initialUsers[2].email,
+                password: initialUser3UnhashedPassword
+            })
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+            .expect((res) => {
+                if(!('accessToken' in res.body)) throw new Error("Missing Access Token")
+            })
+    })
+
+    test('login method fails when email and password matches and the account is activated', async () => {
+        const response = await api
+            .post('/users/login')
+            .send({
+                email: initialUsers[3].email,
+                password: initialUser4UnhashedPassword
+            })
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        expect(response.body).toStrictEqual({ "message": "This Account has not been activated yet" })
+    })
+
+    test('login method fails when email match but password does not match', async () => {
+        const response = await api
+            .post('/users/login')
+            .send({
+                email: initialUsers[3].email,
+                password: 'WrongPassword'
+            })
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        expect(response.body).toStrictEqual({ "message": "Incorrect password for that email" })
+    })
+
+    test('login method fails when email does not match', async () => {
+        const response = await api
+            .post('/users/login')
+            .send({
+                email: 'WrongEmail',
+                password: 'WrongPassword'
+            })
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        expect(response.body).toStrictEqual({ "message": "There is no Account using that email" })
     })
 })
 
