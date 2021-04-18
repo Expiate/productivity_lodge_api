@@ -62,14 +62,16 @@ module.exports.signup = async(req, res) => {
 module.exports.verifyUser = async(req, res) => {
     let user
     try {
-        user = await User.findOne({ 'confirmationCode': req.body.confirmationCode })
+        user = await User.findOne({
+            'confirmationCode': req.body.confirmationCode,
+            'status': User.schema.path('status').enumValues[0]
+        })
         if (user == null) return res.status(404).json({ message: 'This Account is not suitable for Activation'})
     } catch(err) {
         return res.status(500).json({ message: err.message })
     }
 
     user.status = user.schema.path('status').enumValues[1]
-    user.confirmationCode = null
 
     try{
         await user.save()
