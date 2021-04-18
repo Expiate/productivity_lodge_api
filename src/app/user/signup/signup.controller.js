@@ -34,7 +34,7 @@ module.exports.signup = async(req, res) => {
                 return res.status(500).json({ message: err.message })
             }
 
-            res.json({ message: "User was registered successfully! Please check your email to activate your Account"})
+            res.status(201).json({ message: "User was registered successfully! Please check your email to activate your Account"})
 
             nodemailer.sendConfirmationEmail(
                 user.username,
