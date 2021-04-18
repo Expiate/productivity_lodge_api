@@ -6,7 +6,7 @@
   "scripts": {
     "devStart": "cross-env NODE_ENV=development nodemon src/server.js",
     "start": "cross-env NODE_ENV=production node src/server.js",
-    "test": "cross-env NODE_ENV=test jest --verbose"
+    "test": "cross-env NODE_ENV=test jest --runInBand --config jest.config.js"
   },
   "keywords": [
     "ProductivityLodge",
@@ -20,7 +20,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.4",
+    "mongoose": "^5.11.15",
     "nodemailer": "^6.5.0"
   },
   "devDependencies": {
