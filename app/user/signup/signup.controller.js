@@ -64,7 +64,6 @@ module.exports.verifyUser = async(req, res) => {
         return res.status(500).json({ message: err.message })
     }
 
-    // TODO Subject to FAIL
     user.status = user.schema.path('status').enumValues[1]
 
     try{
