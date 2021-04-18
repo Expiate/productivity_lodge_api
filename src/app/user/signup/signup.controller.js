@@ -52,7 +52,7 @@ module.exports.signup = async(req, res) => {
 }
 
 /**
- * This Asyn Function tries to verify if the ConfirmationCode provided in the req param matches with one
+ * This Async Function tries to verify if the ConfirmationCode provided in the req param matches with one
  * saved in the DB (User model) and then proceeds to change its status to Active 
  * 
  * @param {*} req 
@@ -69,6 +69,7 @@ module.exports.verifyUser = async(req, res) => {
     }
 
     user.status = user.schema.path('status').enumValues[1]
+    user.confirmationCode = null
 
     try{
         await user.save()
