@@ -4,9 +4,15 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "devStart": "nodemon src/server.js"
+    "devStart": "cross-env NODE_ENV=development nodemon src/server.js",
+    "start": "cross-env NODE_ENV=production node src/server.js",
+    "test": "cross-env NODE_ENV=test jest --verbose"
   },
-  "keywords": ["ProductivityLodge", "API", "RestFullAPI"],
+  "keywords": [
+    "ProductivityLodge",
+    "API",
+    "RestFullAPI"
+  ],
   "author": "Expiate",
   "license": "ISC",
   "dependencies": {
@@ -18,6 +24,7 @@
     "nodemailer": "^6.5.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.7"
   }
 }
