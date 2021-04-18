@@ -13,14 +13,30 @@ module.exports = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (authHeader) {
+        const tokenIdentifier = authHeader.split(' ')[0];
         const token = authHeader.split(' ')[1];
 
-        jwt.verify(token, process.env.SECRET_TOKEN, (err, decoded) => {
-            if (err) return res.sendStatus(403);
+        if(tokenIdentifier == 'Bearer') {
+            jwt.verify(token, process.env.SECRET_TOKEN, (err, decoded) => {
+                if (err) return res.sendStatus(403);
+    
+                req.userId = decoded.userId;
+                req.role = 'user'
+                next();
+            });
+        } else if (tokenIdentifier == 'Dev') {
+            // TODO Encrypt the Code's 
+            if (token == process.env.DEV_CODE1) {
+                req.role = 'dev'
+                next();
+            } else {
+                res.sendStatus(403);
+            }
+        } else {
+            res.sendStatus(401);
+        }
 
-            req.userId = decoded.userId;
-            next();
-        });
+
     } else {
         res.sendStatus(401);
     }

@@ -78,7 +78,9 @@ describe('User generic tests', () => {
     })
     
     test('there are as many users as specified', async () => {
-        const response = await api.get('/users')
+        const response = await api
+            .get('/users')
+            .set('Authorization', 'Dev ' + process.env.DEV_CODE1)
         expect(response.body).toHaveLength(initialUsers.length)
     })
 })
