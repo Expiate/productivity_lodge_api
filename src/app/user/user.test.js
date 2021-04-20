@@ -7,6 +7,7 @@ const { response } = require('express')
 
 const api = supertest(app)
 
+// Lost tests dependen de este Input, si se cambia el input lost test deben de ser cambiados en concordancia
 const initialUser3UnhashedPassword = 'supermega15'
 const initialUser4UnhashedPassword = 'supermega16'
 
