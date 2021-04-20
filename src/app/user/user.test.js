@@ -87,12 +87,26 @@ describe('User generic tests', () => {
             .expect(200)
         expect(response.body.email).toStrictEqual(initialUsers[2].email)
     })
+
+    test('you cannot return your user if you do not have a valid jwt', async () => {
+        const response = await api
+            .get('/users')
+            .set('Authorization', 'Bearer ' + 'wrongToken')
+            .expect(403)
+    })
     
     test('you can return all users in dev mode', async () => {
         const response = await api
             .get('/users')
             .set('Authorization', 'Dev ' + process.env.DEV_CODE1)
         expect(response.body).toHaveLength(initialUsers.length)
+    })
+
+    test('you cannot enter dev mode without the secret codes', async() => {
+        const response = await api
+            .get('/users')
+            .set('Authorization', 'Dev ' + 'wrongCode')
+            .expect(403)
     })
 })
 
