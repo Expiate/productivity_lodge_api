@@ -8,14 +8,15 @@ const app = express()
 // MongoDB Connection
 require('./mongoDB').connectDatabase()
 
+// Set Connection Whitelist to false
+app.use(cors())
 // Set API to Accept JSON 
 app.use(express.json())
 
 // Load all the Routes and Middleware
 require('./app/middleware/middlewareLoader').loadMiddleware(app)
 require('./routes').loadRoutes(app)
-// Set Connection Whitelist to false
-app.use(cors())
+
 
 const server = app.listen(process.env.PORT, console.log('Server Started'))
 
