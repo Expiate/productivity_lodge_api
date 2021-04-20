@@ -4,9 +4,10 @@ const blacklist = require('./blacklist/blacklist.middleware')
 const blacklistedRoutes = require('./blacklist/blacklist')
 
 /**
- * This Function acts as the central middleware application loader, so it manages which middleware will be active
- * 
- * @param {*} app 
+ * This Function acts as the central middleware application loader, so it manages which middleware
+ * will be active
+ *
+ * @param {*} app
  */
 module.exports.loadMiddleware = (app) => {
     logger.log(app)

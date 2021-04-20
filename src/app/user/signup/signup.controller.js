@@ -1,15 +1,17 @@
-const User = require("../user.model")
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const nodemailer = require("../../services/nodemailer.service")
-const NODE_ENV = process.env.NODE_ENV
+const User = require('../user.model')
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const nodemailer = require('../../services/nodemailer.service')
+
+const { NODE_ENV } = process.env
 
 /**
- * This Async Function tries to find a User that has the same email as the one provided in the req param, then if it does not match with anyone
- * proceeds to create a new user holding the information provided in the req param to save it into the DB
- * 
- * @param {*} req 
- * @param {*} res 
+ * This Async Function tries to find a User that has the same email as the one provided in the
+ * req param, then if it does not match with anyone proceeds to create a new user holding the
+ * information provided in the req param to save it into the DB
+ *
+ * @param {*} req
+ * @param {*} res
  * @returns JSON
  */
 async function signup(req, res) {
@@ -26,41 +28,41 @@ async function signup(req, res) {
         username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 10),
-        confirmationCode: token
+        confirmationCode: token,
     })
 
     try {
         await user.save((err) => {
-            if(err) {
+            if (err) {
                 return res.status(500).json({ message: err.message })
             }
 
-            res.status(201).json({ message: "User was registered successfully! Please check your email to activate your Account"})
+            res.status(201).json({ message: 'User was registered successfully! Please check your email to activate your Account' })
 
             sendEmail(user)
-
         })
-    } catch(err) {
+    } catch (err) {
         return res.status(400).json({ message: err.message })
     }
 }
 
 async function sendEmail(user) {
-    if(NODE_ENV !== 'test') {
+    if (NODE_ENV !== 'test') {
         nodemailer.sendConfirmationEmail(
             user.username,
             user.email,
-            user.confirmationCode
+            user.confirmationCode,
         )
     }
 }
 
 /**
- * This Async Function tries to verify if the ConfirmationCode provided in the req param matches with one
- * saved in the DB (User model) and then proceeds to change its status to Active 
- * 
- * @param {*} req 
- * @param {*} res 
+ * This Async Function tries to verify if the ConfirmationCode provided in the req
+ * param matches with one saved in the DB (User model) and then proceeds to change
+ * its status to Active
+ *
+ * @param {*} req
+ * @param {*} res
  * @returns JSON
  */
 async function verifyUser(req, res) {
@@ -68,10 +70,10 @@ async function verifyUser(req, res) {
     try {
         user = await User.findOne({
             'confirmationCode': req.body.confirmationCode,
-            'status': User.schema.path('status').enumValues[0]
+            'status': User.schema.path('status').enumValues[0],
         })
-        if (user == null) return res.status(404).json({ message: 'This Account is not suitable for Activation'})
-    } catch(err) {
+        if (user == null) return res.status(404).json({ message: 'This Account is not suitable for Activation' })
+    } catch (err) {
         return res.status(500).json({ message: err.message })
     }
 
@@ -79,11 +81,11 @@ async function verifyUser(req, res) {
 
     saveUser(user, res)
 
-    res.status(200).json({ message: 'Account Activated'})
+    res.status(200).json({ message: 'Account Activated' })
 }
 
 async function saveUser(user, res) {
-    try{
+    try {
         await user.save()
     } catch (err) {
         return res.status(500).json({ message: err.message })
@@ -92,6 +94,5 @@ async function saveUser(user, res) {
 
 module.exports = {
     signup,
-    verifyUser
+    verifyUser,
 }
-

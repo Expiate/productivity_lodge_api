@@ -11,5 +11,23 @@
         "ecmaVersion": 12
     },
     "rules": {
+        "linebreak-style":"off",
+        "indent":"off",
+        "no-console":"off",
+        "semi":"off",
+        "import/order":"off",
+        "func-names":"off",
+        "eqeqeq":"off",
+        "consistent-return":"off",
+        "object-shorthand":"off",
+        "no-cond-assign":"off",
+        "no-use-before-define":"off",
+        "quote-props":"off",
+        "no-undef":"off",
+        "no-shadow":"off",
+        "no-unused-vars":"off",
+        "prefer-destructuring":"off",
+        "no-useless-concat":"off",
+        "prefer-template":"off"
     }
 }

@@ -1,5 +1,6 @@
 const express = require('express')
 const signController = require('./signup.controller')
+
 const router = express.Router()
 
 // Signup Route

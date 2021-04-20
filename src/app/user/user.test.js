@@ -6,8 +6,10 @@ const bcrypt = require('bcrypt')
 const { response } = require('express')
 
 const api = supertest(app)
-
-// Lost tests dependen de este Input, si se cambia el input lost test deben de ser cambiados en concordancia
+/*
+    Lost tests dependen de este Input, si se cambia el input lost
+    test deben de ser cambiados en concordancia
+*/
 const initialUser3UnhashedPassword = 'supermega15'
 const initialUser4UnhashedPassword = 'supermega16'
 
@@ -17,42 +19,42 @@ const initialUsers = [
         email: 'tuetano32@gmail.com',
         password: 'supermega14',
         confirmationCode: '1',
-        status: 'Pending'
+        status: 'Pending',
     },
     {
         username: 'Network',
         email: 'networkbet4@gmail.com',
         password: 'supermega15',
         confirmationCode: '2',
-        status: 'Active'
+        status: 'Active',
     },
     {
         username: 'Mr Ejemplo',
         email: 'ejemplo@gmail.com',
         password: bcrypt.hashSync(initialUser3UnhashedPassword, 10),
         confirmationCode: '3',
-        status: 'Active'
+        status: 'Active',
     },
     {
         username: 'Jim',
         email: 'jim@gmail.com',
         password: bcrypt.hashSync(initialUser4UnhashedPassword, 10),
         confirmationCode: '4',
-        status: 'Pending'
-    }
+        status: 'Pending',
+    },
 ]
 
 const usersToSignup = [
     {
         username: 'Jose Luis',
         email: 'joseludev@gmail.com',
-        password: 'supermega14'
+        password: 'supermega14',
     },
     {
         username: 'Expiate',
         email: 'tuetano32@gmail.com',
         password: 'supermega15',
-    }
+    },
 ]
 
 beforeEach(async () => {
@@ -77,11 +79,11 @@ describe('User generic tests', () => {
             .post('/users/login')
             .send({
                 email: initialUsers[2].email,
-                password: initialUser3UnhashedPassword
+                password: initialUser3UnhashedPassword,
             })
             .expect(200)
             .expect('Content-Type', /application\/json/)
-        
+
         const response = await api
             .get('/users')
             .set('Authorization', 'Bearer ' + loginResponse.body.accessToken)
@@ -95,7 +97,7 @@ describe('User generic tests', () => {
             .set('Authorization', 'Bearer ' + 'wrongToken')
             .expect(403)
     })
-    
+
     test('you can return all users in dev mode', async () => {
         const response = await api
             .get('/users')
@@ -103,7 +105,7 @@ describe('User generic tests', () => {
         expect(response.body).toHaveLength(initialUsers.length)
     })
 
-    test('you cannot enter dev mode without the secret codes', async() => {
+    test('you cannot enter dev mode without the secret codes', async () => {
         const response = await api
             .get('/users')
             .set('Authorization', 'Dev ' + 'wrongCode')
@@ -118,25 +120,25 @@ describe('Verify User tests', () => {
             .send({ confirmationCode: '1' })
             .expect(200)
             .expect('Content-Type', /application\/json/)
-        expect(response.body).toStrictEqual({"message": "Account Activated"})
+        expect(response.body).toStrictEqual({ 'message': 'Account Activated' })
     })
-    
+
     test('verify method does not work for status/active user', async () => {
         const response = await api
             .post('/users/signup/confirm')
             .send({ confirmationCode: '2' })
             .expect(404)
             .expect('Content-Type', /application\/json/)
-        expect(response.body).toStrictEqual({ "message": 'This Account is not suitable for Activation'})
+        expect(response.body).toStrictEqual({ 'message': 'This Account is not suitable for Activation' })
     })
-    
+
     test('verify method does not work if the confirmationCode does not match with one in the database', async () => {
         const response = await api
             .post('/users/signup/confirm')
             .send({ confirmationCode: '45' })
             .expect(404)
             .expect('Content-Type', /application\/json/)
-        expect(response.body).toStrictEqual({ "message": 'This Account is not suitable for Activation'})
+        expect(response.body).toStrictEqual({ 'message': 'This Account is not suitable for Activation' })
     })
 })
 
@@ -147,7 +149,7 @@ describe('Signup User tests', () => {
             .send(usersToSignup[0])
             .expect(201)
             .expect('Content-Type', /application\/json/)
-        expect(response.body).toStrictEqual({ "message": "User was registered successfully! Please check your email to activate your Account"})
+        expect(response.body).toStrictEqual({ 'message': 'User was registered successfully! Please check your email to activate your Account' })
     })
 
     test('signup method does not works if your email match with one in the database', async () => {
@@ -156,7 +158,7 @@ describe('Signup User tests', () => {
             .send(usersToSignup[1])
             .expect(400)
             .expect('Content-Type', /application\/json/)
-        expect(response.body).toStrictEqual({ "message": "There is already an Account using that email"})
+        expect(response.body).toStrictEqual({ 'message': 'There is already an Account using that email' })
     })
 
     test('passwords are being encrypted correctly', async () => {
@@ -178,12 +180,12 @@ describe('Login User tests', () => {
             .post('/users/login')
             .send({
                 email: initialUsers[2].email,
-                password: initialUser3UnhashedPassword
+                password: initialUser3UnhashedPassword,
             })
             .expect(200)
             .expect('Content-Type', /application\/json/)
             .expect((res) => {
-                if(!('accessToken' in res.body)) throw new Error("Missing Access Token")
+                if (!('accessToken' in res.body)) throw new Error('Missing Access Token')
             })
     })
 
@@ -192,11 +194,11 @@ describe('Login User tests', () => {
             .post('/users/login')
             .send({
                 email: initialUsers[3].email,
-                password: initialUser4UnhashedPassword
+                password: initialUser4UnhashedPassword,
             })
             .expect(400)
             .expect('Content-Type', /application\/json/)
-        expect(response.body).toStrictEqual({ "message": "This Account has not been activated yet" })
+        expect(response.body).toStrictEqual({ 'message': 'This Account has not been activated yet' })
     })
 
     test('login method fails when email match but password does not match', async () => {
@@ -204,11 +206,11 @@ describe('Login User tests', () => {
             .post('/users/login')
             .send({
                 email: initialUsers[3].email,
-                password: 'WrongPassword'
+                password: 'WrongPassword',
             })
             .expect(400)
             .expect('Content-Type', /application\/json/)
-        expect(response.body).toStrictEqual({ "message": "Incorrect password for that email" })
+        expect(response.body).toStrictEqual({ 'message': 'Incorrect password for that email' })
     })
 
     test('login method fails when email does not match', async () => {
@@ -216,14 +218,13 @@ describe('Login User tests', () => {
             .post('/users/login')
             .send({
                 email: 'WrongEmail',
-                password: 'WrongPassword'
+                password: 'WrongPassword',
             })
             .expect(400)
             .expect('Content-Type', /application\/json/)
-        expect(response.body).toStrictEqual({ "message": "There is no Account using that email" })
+        expect(response.body).toStrictEqual({ 'message': 'There is no Account using that email' })
     })
 })
-
 
 afterAll(() => {
     mongoose.connection.close()

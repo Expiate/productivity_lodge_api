@@ -10,7 +10,7 @@ module.exports.connectDatabase = () => {
     mongoose.connect(connectionString, {
         useNewUrlParser: true,
         useCreateIndex: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
     })
     const db = mongoose.connection
     db.on('error', (error) => console.error(error))

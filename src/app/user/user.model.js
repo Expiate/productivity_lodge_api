@@ -3,29 +3,29 @@ const mongoose = require('mongoose')
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: true
+        required: true,
     },
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
     status: {
         type: String,
         enum: ['Pending', 'Active'],
-        default: 'Pending'
+        default: 'Pending',
     },
     confirmationCode: {
         type: String,
-        unique: true
+        unique: true,
     },
     registerDate: {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
     preferences: {
         colors: [String],
@@ -34,9 +34,9 @@ const userSchema = new mongoose.Schema({
             type: Number,
             min: 0,
             max: 24,
-            default: 16
-        }
-    }
+            default: 16,
+        },
+    },
 })
 
 module.exports = mongoose.model('User', userSchema)
