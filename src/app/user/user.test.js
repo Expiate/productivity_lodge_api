@@ -70,15 +70,16 @@ beforeEach(async () => {
 })
 
 describe('User generic tests', () => {
-    // TODO Determine an Access Type Dev or User
-    test('users are returned as json', async () => {
+    /*
+    test('a single user is returned in user mode', async () => {
         const response = await api
             .get('/users')
             .expect(200)
             .expect('Content-Type', /application\/json/)
     })
+    */
     
-    test('there are as many users as specified', async () => {
+    test('you can return all users in dev mode', async () => {
         const response = await api
             .get('/users')
             .set('Authorization', 'Dev ' + process.env.DEV_CODE1)

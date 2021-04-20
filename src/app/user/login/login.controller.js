@@ -10,7 +10,7 @@ const bcrypt = require("bcrypt");
  * @param {*} res 
  * @returns JSON
  */
-module.exports.login = async(req, res) => {
+async function login(req, res) {
     let user
     try {
         user = await User.findOne({ 'email': req.body.email })
@@ -25,4 +25,8 @@ module.exports.login = async(req, res) => {
 
     const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET)
     res.status(200).json({ accessToken: accessToken })
+}
+
+module.exports = {
+    login
 }

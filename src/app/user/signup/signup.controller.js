@@ -12,7 +12,7 @@ const NODE_ENV = process.env.NODE_ENV
  * @param {*} res 
  * @returns JSON
  */
-module.exports.signup = async(req, res) => {
+async function signup(req, res) {
     let user
     try {
         if (user = await User.findOne({ 'email': req.body.email }) != null) return res.status(400).json({ message: 'There is already an Account using that email' })
@@ -37,17 +37,21 @@ module.exports.signup = async(req, res) => {
 
             res.status(201).json({ message: "User was registered successfully! Please check your email to activate your Account"})
 
-            if(NODE_ENV !== 'test') {
-                nodemailer.sendConfirmationEmail(
-                    user.username,
-                    user.email,
-                    user.confirmationCode
-                )
-            }
+        sendEmail(user)
 
         })
     } catch(err) {
         return res.status(400).json({ message: err.message })
+    }
+}
+
+async function sendEmail(user) {
+    if(NODE_ENV !== 'test') {
+        nodemailer.sendConfirmationEmail(
+            user.username,
+            user.email,
+            user.confirmationCode
+        )
     }
 }
 
@@ -59,7 +63,7 @@ module.exports.signup = async(req, res) => {
  * @param {*} res 
  * @returns JSON
  */
-module.exports.verifyUser = async(req, res) => {
+async function verifyUser(req, res) {
     let user
     try {
         user = await User.findOne({
@@ -73,12 +77,21 @@ module.exports.verifyUser = async(req, res) => {
 
     user.status = user.schema.path('status').enumValues[1]
 
+    saveUser(user, res)
+
+    res.status(200).json({ message: 'Account Activated'})
+}
+
+async function saveUser(user, res) {
     try{
         await user.save()
     } catch (err) {
         return res.status(500).json({ message: err.message })
     }
+}
 
-    res.status(200).json({ message: 'Account Activated'})
+module.exports = {
+    signup,
+    verifyUser
 }
 
