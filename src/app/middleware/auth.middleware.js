@@ -17,11 +17,13 @@ module.exports = (req, res, next) => {
         const token = authHeader.split(' ')[1];
 
         if(tokenIdentifier == 'Bearer') {
-            jwt.verify(token, process.env.SECRET_TOKEN, (err, decoded) => {
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
                 if (err) return res.sendStatus(403);
-    
-                req.userId = decoded.userId;
+                
+                console.log(`${decoded.email} authenticated`)
+                req.email = decoded.email;
                 req.role = 'user'
+                console.log(`Auth Middleware Exited`)
                 next();
             });
         } else if (tokenIdentifier == 'Dev') {

@@ -11,6 +11,6 @@ router.use('/signup', signRouter)
 router.use('/login', logRouter)
 
 // Get All Users Route
-router.route('/').get(userController.getAll)
+router.route('/').get(userController.getByRole)
 
 module.exports = router

@@ -37,7 +37,7 @@ async function signup(req, res) {
 
             res.status(201).json({ message: "User was registered successfully! Please check your email to activate your Account"})
 
-        sendEmail(user)
+            sendEmail(user)
 
         })
     } catch(err) {

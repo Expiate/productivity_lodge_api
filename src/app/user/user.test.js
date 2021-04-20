@@ -3,6 +3,7 @@ const supertest = require('supertest')
 const { app, server } = require('../../server')
 const User = require('./user.model')
 const bcrypt = require('bcrypt')
+const { response } = require('express')
 
 const api = supertest(app)
 
@@ -70,14 +71,22 @@ beforeEach(async () => {
 })
 
 describe('User generic tests', () => {
-    /*
-    test('a single user is returned in user mode', async () => {
-        const response = await api
-            .get('/users')
+    test('you can return your user accesing in user mode with a valid jwt', async () => {
+        const loginResponse = await api
+            .post('/users/login')
+            .send({
+                email: initialUsers[2].email,
+                password: initialUser3UnhashedPassword
+            })
             .expect(200)
             .expect('Content-Type', /application\/json/)
+        
+        const response = await api
+            .get('/users')
+            .set('Authorization', 'Bearer ' + loginResponse.body.accessToken)
+            .expect(200)
+        expect(response.body.email).toStrictEqual(initialUsers[2].email)
     })
-    */
     
     test('you can return all users in dev mode', async () => {
         const response = await api
