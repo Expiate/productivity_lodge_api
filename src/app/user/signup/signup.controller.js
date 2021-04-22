@@ -17,6 +17,8 @@ const { NODE_ENV } = process.env
 async function signup(req, res) {
     let user
     try {
+        // TODO Check if no body is provided provided correctly
+        if (req.body.items == 0) return res.status(400).json({ message: 'No content provided' })
         if (user = await User.findOne({ 'email': req.body.email }) != null) return res.status(400).json({ message: 'There is already an Account using that email' })
     } catch (err) {
         return res.status(500).json({ message: err.message })
