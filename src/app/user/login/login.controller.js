@@ -22,7 +22,7 @@ async function login(req, res) {
 
     if (!bcrypt.compareSync(req.body.password, user.password)) return res.status(400).json({ message: 'Incorrect password for that email' })
 
-    if (user.status == User.schema.path('status').enumValues[0]) return res.status(400).json({ message: 'This Account has not been activated yet' })
+    if (user.status == User.schema.path('status').enumValues[0]) return res.status(403).json({ message: 'This Account has not been activated yet' })
 
     const accessToken = jwt.sign({ email: user.email }, process.env.ACCESS_TOKEN_SECRET)
     res.status(200).json({ accessToken: accessToken })
