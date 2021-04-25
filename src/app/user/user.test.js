@@ -140,6 +140,24 @@ describe('Verify User tests', () => {
             .expect('Content-Type', /application\/json/)
         expect(response.body).toStrictEqual({ 'message': 'This Account is not suitable for Activation' })
     })
+
+    test('you can resend a verification email if your account is still pending', async () => {
+        const response = await api
+            .post('/users/signup/confirm/resend')
+            .send({ email: initialUsers[0].email })
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        expect(response.body).toStrictEqual({ 'message': 'Verification Email Sent' })
+    })
+
+    test('you cannot resend a verification email if your account is active', async () => {
+        const response = await api
+            .post('/users/signup/confirm/resend')
+            .send({ email: initialUsers[1].email })
+            .expect(404)
+            .expect('Content-Type', /application\/json/)
+        expect(response.body).toStrictEqual({ 'message': 'This Account is not suitable for Activation' })
+    })
 })
 
 describe('Signup User tests', () => {
@@ -189,14 +207,14 @@ describe('Login User tests', () => {
             })
     })
 
-    test('login method fails when email and password matches and the account is activated', async () => {
+    test('login method fails when email and password matches and the account is not activated', async () => {
         const response = await api
             .post('/users/login')
             .send({
                 email: initialUsers[3].email,
                 password: initialUser4UnhashedPassword,
             })
-            .expect(400)
+            .expect(403)
             .expect('Content-Type', /application\/json/)
         expect(response.body).toStrictEqual({ 'message': 'This Account has not been activated yet' })
     })

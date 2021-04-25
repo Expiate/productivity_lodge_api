@@ -86,6 +86,23 @@ async function verifyUser(req, res) {
     res.status(200).json({ message: 'Account Activated' })
 }
 
+async function resendEmail(req, res) {
+    let user
+    try {
+        user = await User.findOne({
+            'email': req.body.email.toLowerCase(),
+            'status': User.schema.path('status').enumValues[0],
+        })
+        if (user == null) return res.status(404).json({ message: 'This Account is not suitable for Activation' })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+
+    sendEmail(user)
+
+    res.status(200).json({ message: 'Verification Email Sent' })
+}
+
 async function saveUser(user, res) {
     try {
         await user.save()
@@ -97,4 +114,5 @@ async function saveUser(user, res) {
 module.exports = {
     signup,
     verifyUser,
+    resendEmail,
 }

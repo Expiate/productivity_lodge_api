@@ -3,6 +3,7 @@ const routes = [
     '/users/login',
     '/users/signup',
     '/users/signup/confirm',
+    '/users/signup/confirm/resend',
 ];
 
 module.exports = routes;
