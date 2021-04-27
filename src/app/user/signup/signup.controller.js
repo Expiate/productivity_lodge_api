@@ -1,7 +1,7 @@
 const User = require('../user.model')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const nodemailer = require('../../services/nodemailer.service')
+const nodemailer = require('../../common/services/nodemailer.service')
 
 const { NODE_ENV } = process.env
 
@@ -70,10 +70,10 @@ async function sendEmail(user) {
 async function verifyUser(req, res) {
     let user
     try {
-        user = await User.findOne({
+        user = (await User.findOne({
             'confirmationCode': req.body.confirmationCode,
             'status': User.schema.path('status').enumValues[0],
-        })
+        }))
         if (user == null) return res.status(404).json({ message: 'This Account is not suitable for Activation' })
     } catch (err) {
         return res.status(500).json({ message: err.message })

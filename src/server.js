@@ -14,7 +14,7 @@ app.use(cors())
 app.use(express.json())
 
 // Load all the Routes and Middleware
-require('./app/middleware/middlewareLoader').loadMiddleware(app)
+require('./app/common/middleware/middlewareLoader').loadMiddleware(app)
 require('./routes').loadRoutes(app)
 
 const server = app.listen(process.env.PORT, console.log('Server Started'))
