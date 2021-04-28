@@ -39,7 +39,7 @@ async function deleteUser(req, res) {
 
     res.status(200).json({ message: 'User deleted'})
 }
-
+// TODO Write logic to ChangePassword
 async function changePassword(req, res) {
     
 }
