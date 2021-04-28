@@ -24,7 +24,27 @@ async function getByRole(req, res) {
         }
     }
 }
+/**
+ * This Async Function gets the email from the decoded JWT and
+ * uses it to delete its User
+ * @param {*} req
+ * @param {*} res 
+ * @returns Response
+ */
+async function deleteUser(req, res) {
+    const userToDelete = await User.findOneAndDelete({ email: req.email })
+
+    // This case will never happend
+    if (userToDelete == null) return res.status(404).json({ message: 'User not found' })
+
+    res.status(200).json({ message: 'User deleted'})
+}
+
+async function changePassword(req, res) {
+    
+}
 
 module.exports = {
     getByRole,
+    deleteUser,
 }

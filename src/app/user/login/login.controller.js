@@ -9,7 +9,7 @@ const bcrypt = require('bcrypt');
  *
  * @param {*} req
  * @param {*} res
- * @returns JSON
+ * @returns Response
  */
 async function login(req, res) {
     let user

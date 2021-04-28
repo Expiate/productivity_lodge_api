@@ -12,7 +12,7 @@ const { NODE_ENV } = process.env
  *
  * @param {*} req
  * @param {*} res
- * @returns JSON
+ * @returns Response
  */
 async function signup(req, res) {
     let user
@@ -65,7 +65,7 @@ async function sendEmail(user) {
  *
  * @param {*} req
  * @param {*} res
- * @returns JSON
+ * @returns Response
  */
 async function verifyUser(req, res) {
     let user
