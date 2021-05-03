@@ -24,7 +24,6 @@ module.exports = (req, res, next) => {
                 console.log(`${decoded.email} authenticated`)
                 req.email = decoded.email;
                 req.role = 'user'
-                console.log('Auth Middleware Exited')
                 next();
             });
         } else if (tokenIdentifier == 'Dev') {
