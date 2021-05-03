@@ -5,10 +5,10 @@ async function createDay(req, res) {
     let day
     try {
         // TODO Check if no body is provided provided correctly
-        if (req.body.items == 0) return res.status(400).json({ message: 'No content provided' })
+        if (req.body.length == 0) return res.status(400).json({ message: 'No content provided' })
         if (day = await Day.findOne({
-            'email': req.email,
-            'date': req.body.date, 
+            'userEmail': req.email,
+            'date': new Date(req.body.date), 
         }) != null) return res.status(400).json({ message: 'There is already a Day with that date' })
     } catch (err) {
         return res.status(500).json({ message: err.message })
