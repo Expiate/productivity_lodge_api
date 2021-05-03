@@ -4,8 +4,7 @@ const Day = require('./day.model')
 async function createDay(req, res) {
     let day
     try {
-        // TODO Check if no body is provided provided correctly
-        if (req.body.length == 0) return res.status(400).json({ message: 'No content provided' })
+        if (req.body.date == null) return res.status(400).json({ message: 'No date provided' })
         if (day = await Day.findOne({
             'userEmail': req.email,
             'date': new Date(req.body.date), 
@@ -43,14 +42,55 @@ async function createDay(req, res) {
         return res.status(400).json({ message: err.message })
     }
 }
+
 // Get Day by User / Date
+async function getByDate(req, res) {
+    let day
 
-// Get Days by User / Month / Year
+    if (req.body.date == null) return res.status(400).json({ message: 'No date provided' })
 
+    try {
+        day = await Day.findOne({
+            userEmail: req.email,
+            date: new Date(req.body.date)
+        })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+
+    if (day == null) return res.status(404).json({ message: 'Day not found' })
+
+    res.status(200).json(day)
+}
+
+// Get Days by User / Year
+async function getByYear(req, res) {
+    let days
+
+    let year = req.body.year
+    if(year == null) return res.status(400).json({ message: 'No year provided' })
+
+    try {
+        days = await Day.find({
+            date: {
+                $gte: new Date().setFullYear(year, 0, 1),
+                $lt: new Date().setFullYear(year, 11, 31)
+            }
+        })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+
+    if (days == null) return res.status(404).json({ message: 'Days not found' })
+
+    res.status(200).json(days)
+}
 // Update Day
 
 // Delete Day
 
 module.exports = {
     createDay,
+    getByDate,
+    getByYear,
 }
