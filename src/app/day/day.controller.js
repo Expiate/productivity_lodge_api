@@ -46,13 +46,13 @@ async function createDay(req, res) {
 // Get Day by User / Date
 async function getByDate(req, res) {
     let day
-
-    if (req.body.date == null) return res.status(400).json({ message: 'No date provided' })
+    let date = req.params.date
+    if (date == null) return res.status(400).json({ message: 'No date provided' })
 
     try {
         day = await Day.findOne({
             userEmail: req.email,
-            date: new Date(req.body.date)
+            date: new Date(date)
         })
     } catch (err) {
         return res.status(500).json({ message: err.message })
@@ -67,7 +67,7 @@ async function getByDate(req, res) {
 async function getByYear(req, res) {
     let days
 
-    let year = req.body.year
+    let year = req.params.year
     if(year == null) return res.status(400).json({ message: 'No year provided' })
 
     try {
