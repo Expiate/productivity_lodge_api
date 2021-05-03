@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const daySchema = new mongoose.Schema({
-    userEmail : {
+    userEmail: {
         type: String,
         required: true,
     },
@@ -17,7 +17,7 @@ const daySchema = new mongoose.Schema({
     },
     emotions: {
         type: [String],
-    }
+    },
 })
 
 module.exports = mongoose.model('Day', daySchema)
