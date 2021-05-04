@@ -3,11 +3,16 @@ const Day = require('./day.model')
 // Create Day
 async function createDay(req, res) {
     let day
+    
+    let date = req.body.date
+    if (date == null) return res.status(400).json({ message: 'No date provided' })
+
+    let splitDate = date.split('-')
+
     try {
-        if (req.body.date == null) return res.status(400).json({ message: 'No date provided' })
         if (day = await Day.findOne({
             'userEmail': req.email,
-            'date': new Date(req.body.date),
+            'date': new Date(date),
         }) != null) return res.status(400).json({ message: 'There is already a Day with that date' })
     } catch (err) {
         return res.status(500).json({ message: err.message })
@@ -15,7 +20,7 @@ async function createDay(req, res) {
 
     day = new Day({
         userEmail: req.email,
-        date: req.body.date,
+        date: new Date(date),
     })
 
     if (req.body.mood != null) {
@@ -74,8 +79,8 @@ async function getByYear(req, res) {
         days = await Day.find({
             userEmail: req.email,
             date: {
-                $gte: new Date().setFullYear(year, 0, 1),
-                $lt: new Date().setFullYear(year, 11, 31),
+                $gte: new Date(`${year}/01/01`),
+                $lt: new Date(`${year}/12/31`).setHours(23),
             },
         })
     } catch (err) {
