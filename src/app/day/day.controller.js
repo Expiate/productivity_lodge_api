@@ -3,11 +3,9 @@ const Day = require('./day.model')
 // Create Day
 async function createDay(req, res) {
     let day
-    
-    let date = req.body.date
-    if (date == null) return res.status(400).json({ message: 'No date provided' })
 
-    let splitDate = date.split('-')
+    const date = req.body.date
+    if (date == null) return res.status(400).json({ message: 'No date provided' })
 
     try {
         if (day = await Day.findOne({
