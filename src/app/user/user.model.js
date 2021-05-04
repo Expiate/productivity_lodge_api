@@ -28,7 +28,16 @@ const userSchema = new mongoose.Schema({
         default: Date.now,
     },
     preferences: {
-        colors: [String],
+        colors: {
+            type: [String],
+            default: [
+                '#7e57c2',
+                '#5c6bc0',
+                '#00bcd4',
+                '#9ccc65',
+                '#4caf50',
+            ]
+        },
         topics: [String],
         hours_max: {
             type: Number,
