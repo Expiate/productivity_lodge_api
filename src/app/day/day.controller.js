@@ -72,7 +72,7 @@ async function getByYear(req, res) {
 
     try {
         days = await Day.find({
-            userMail: req.email,
+            userEmail: req.email,
             date: {
                 $gte: new Date().setFullYear(year, 0, 1),
                 $lt: new Date().setFullYear(year, 11, 31),
