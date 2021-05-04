@@ -19,7 +19,12 @@ async function getByRole(req, res) {
         try {
             const user = await User.findOne({ email: req.email })
             if (user == null) return res.status(404).json({ message: 'User not found' })
-            res.status(200).json(user)
+            let userData = {
+                username: user.username,
+                email: user.email,
+                preferences: user.preferences,
+            }
+            res.status(200).json(userData)
         } catch (err) {
             res.status(500).json({ message: err.mensaje })
         }
