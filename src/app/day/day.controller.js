@@ -82,7 +82,7 @@ async function getByYear(req, res) {
         return res.status(500).json({ message: err.message })
     }
 
-    if (days == null) return res.status(404).json({ message: 'Days not found' })
+    if (days.length == 0) return res.status(404).json({ message: 'Days not found' })
 
     res.status(200).json(days)
 }
@@ -116,7 +116,7 @@ async function updateDay(req, res) {
     }
 
     try {
-        await day.updateOne((err) => {
+        await day.save((err) => {
             if (err) {
                 return res.status(500).json({ message: err.message })
             }

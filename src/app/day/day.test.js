@@ -114,9 +114,73 @@ describe('get day tests', () => {
     test('you cannot get a day without a valid date', async() => {
 
         const response = await api
-        .get('/days/getDay/')
+        .get('/days/getDay/2020-05-02')
         .set('Authorization', jwtToken)
         .expect(404)
+    })
+})
+
+describe('get days tests', () => {
+    test('you can get a day using a valid year', async() => {
+
+        const response = await api
+        .get(`/days/getDays/2021`)
+        .set('Authorization', jwtToken)
+        .expect(200)
+    })
+
+    test('you cannot get a day without a valid year', async() => {
+
+        const response = await api
+        .get('/days/getDays/4050')
+        .set('Authorization', jwtToken)
+        .expect(404)
+    })
+})
+
+describe('update day tests', () => {
+    test('you can update a day using valid input', async() => {
+
+        const response = await api
+        .patch(`/days/update/${initialDays[1].date}`)
+        .set('Authorization', jwtToken)
+        .send({
+            "note" : "update"
+        })
+        .expect(200)
+        expect(response.body).toStrictEqual({ message: 'Day updated' })
+    })
+
+    test('you cannot update a day without valid input', async() => {
+
+        const response = await api
+        .patch(`/days/update/2020-04-01`)
+        .set('Authorization', jwtToken)
+        .send({
+            "note" : "update"
+        })
+        .expect(404)
+        expect(response.body).toStrictEqual({ message: 'Day not found' })
+    })
+})
+
+describe('delete day tests', () => {
+    test('you can delete a day using valid input', async() => {
+
+        const response = await api
+        .delete(`/days/delete/${initialDays[1].date}`)
+        .set('Authorization', jwtToken)
+        .expect(200)
+        expect(response.body).toStrictEqual({ message: 'Day Deleted' })
+    })
+
+    test('you cannot delete a day without a valid date', async() => {
+
+        const response = await api
+        .delete(`/days/delete/1972-05-05`)
+        .set('Authorization', jwtToken)
+        .expect(404)
+        expect(response.body).toStrictEqual({ message: 'Day not found' })
     })
 })
 
