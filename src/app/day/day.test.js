@@ -14,41 +14,41 @@ const jwtToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InR1ZX
 
 const initialDays = [
     {
-        "userEmail": "tuetano32@gmail.com",
-        "date": "2021-06-18",
-        "mood": "3",
-        "emotions": [
-            "relax",
-            "love",
-            "optimistic",
-            "motivated",
-            "sick"
+        'userEmail': 'tuetano32@gmail.com',
+        'date': '2021-06-18',
+        'mood': '3',
+        'emotions': [
+            'relax',
+            'love',
+            'optimistic',
+            'motivated',
+            'sick',
         ],
-        "note": "I went to my old college to take some photos of the patio statue to keep working in my project. And I had to cook for my family for dinner"
+        'note': 'I went to my old college to take some photos of the patio statue to keep working in my project. And I had to cook for my family for dinner',
     },
     {
-        "userEmail": "tuetano32@gmail.com",
-        "date": "2021-07-28",
-        "emotions": [
-            "relax",
-        ]
-    }
+        'userEmail': 'tuetano32@gmail.com',
+        'date': '2021-07-28',
+        'emotions': [
+            'relax',
+        ],
+    },
 ]
 
 const daysToCreate = [
     {
-        "date": "2021-09-20",
-        "mood": "3",
-        "note": "Nothing here"
+        'date': '2021-09-20',
+        'mood': '3',
+        'note': 'Nothing here',
     },
     {
-        "mood": "3",
-        "note": "Nothing here"
+        'mood': '3',
+        'note': 'Nothing here',
     },
     {
-        "date": "2021-06-18",
-        "mood": "3",
-        "note": "Nothing here"
+        'date': '2021-06-18',
+        'mood': '3',
+        'note': 'Nothing here',
     },
 ]
 
@@ -63,8 +63,7 @@ beforeEach(async () => {
 })
 
 describe('create day tests', () => {
-    test('you can create a day with valid input', async() => {
-
+    test('you can create a day with valid input', async () => {
         const response = await api
         .post('/days/create')
         .set('Authorization', jwtToken)
@@ -73,16 +72,14 @@ describe('create day tests', () => {
         expect(response.body).toStrictEqual({ 'message': 'Day created successfully' })
     })
 
-    test('you cannot create a day without a jwt token', async() => {
-
+    test('you cannot create a day without a jwt token', async () => {
         const response = await api
         .post('/days/create')
         .send(daysToCreate[0])
         .expect(401)
     })
 
-    test('you cannot create a day without a date', async() => {
-
+    test('you cannot create a day without a date', async () => {
         const response = await api
         .post('/days/create')
         .set('Authorization', jwtToken)
@@ -91,8 +88,7 @@ describe('create day tests', () => {
         expect(response.body).toStrictEqual({ 'message': 'No date provided' })
     })
 
-    test('you cannot create a if there is one with the same date', async() => {
-
+    test('you cannot create a if there is one with the same date', async () => {
         const response = await api
         .post('/days/create')
         .set('Authorization', jwtToken)
@@ -103,16 +99,14 @@ describe('create day tests', () => {
 })
 
 describe('get day tests', () => {
-    test('you can get a day using valid input', async() => {
-
+    test('you can get a day using valid input', async () => {
         const response = await api
         .get(`/days/getDay/${initialDays[0].date}`)
         .set('Authorization', jwtToken)
         .expect(200)
     })
 
-    test('you cannot get a day without a valid date', async() => {
-
+    test('you cannot get a day without a valid date', async () => {
         const response = await api
         .get('/days/getDay/2020-05-02')
         .set('Authorization', jwtToken)
@@ -121,16 +115,14 @@ describe('get day tests', () => {
 })
 
 describe('get days tests', () => {
-    test('you can get a day using a valid year', async() => {
-
+    test('you can get a day using a valid year', async () => {
         const response = await api
-        .get(`/days/getDays/2021`)
+        .get('/days/getDays/2021')
         .set('Authorization', jwtToken)
         .expect(200)
     })
 
-    test('you cannot get a day without a valid year', async() => {
-
+    test('you cannot get a day without a valid year', async () => {
         const response = await api
         .get('/days/getDays/4050')
         .set('Authorization', jwtToken)
@@ -139,25 +131,23 @@ describe('get days tests', () => {
 })
 
 describe('update day tests', () => {
-    test('you can update a day using valid input', async() => {
-
+    test('you can update a day using valid input', async () => {
         const response = await api
         .patch(`/days/update/${initialDays[1].date}`)
         .set('Authorization', jwtToken)
         .send({
-            "note" : "update"
+            'note': 'update',
         })
         .expect(200)
         expect(response.body).toStrictEqual({ message: 'Day updated' })
     })
 
-    test('you cannot update a day without valid input', async() => {
-
+    test('you cannot update a day without valid input', async () => {
         const response = await api
-        .patch(`/days/update/2020-04-01`)
+        .patch('/days/update/2020-04-01')
         .set('Authorization', jwtToken)
         .send({
-            "note" : "update"
+            'note': 'update',
         })
         .expect(404)
         expect(response.body).toStrictEqual({ message: 'Day not found' })
@@ -165,8 +155,7 @@ describe('update day tests', () => {
 })
 
 describe('delete day tests', () => {
-    test('you can delete a day using valid input', async() => {
-
+    test('you can delete a day using valid input', async () => {
         const response = await api
         .delete(`/days/delete/${initialDays[1].date}`)
         .set('Authorization', jwtToken)
@@ -174,10 +163,9 @@ describe('delete day tests', () => {
         expect(response.body).toStrictEqual({ message: 'Day Deleted' })
     })
 
-    test('you cannot delete a day without a valid date', async() => {
-
+    test('you cannot delete a day without a valid date', async () => {
         const response = await api
-        .delete(`/days/delete/1972-05-05`)
+        .delete('/days/delete/1972-05-05')
         .set('Authorization', jwtToken)
         .expect(404)
         expect(response.body).toStrictEqual({ message: 'Day not found' })
