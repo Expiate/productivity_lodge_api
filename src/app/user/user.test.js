@@ -3,12 +3,12 @@ const supertest = require('supertest')
 const { app, server } = require('../../server')
 const User = require('./user.model')
 const bcrypt = require('bcrypt')
-const { response } = require('express')
 
 const api = supertest(app)
 /*
-    Lost tests dependen de este Input, si se cambia el input lost
-    test deben de ser cambiados en concordancia
+    Tests depend on this initial data to check the API endpoints,
+    if you are willing to change a test you should check what
+    initial data it uses to work
 */
 const initialUser3UnhashedPassword = 'supermega15'
 const initialUser4UnhashedPassword = 'supermega16'
