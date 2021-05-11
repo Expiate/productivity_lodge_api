@@ -102,6 +102,24 @@ describe('create day tests', () => {
     })
 })
 
+describe('get day tests', () => {
+    test('you can get a day using valid input', async() => {
+
+        const response = await api
+        .get(`/days/getDay/${initialDays[0].date}`)
+        .set('Authorization', jwtToken)
+        .expect(200)
+    })
+
+    test('you cannot get a day without a valid date', async() => {
+
+        const response = await api
+        .get('/days/getDay/')
+        .set('Authorization', jwtToken)
+        .expect(404)
+    })
+})
+
 afterAll(() => {
     mongoose.connection.close()
     server.close()
