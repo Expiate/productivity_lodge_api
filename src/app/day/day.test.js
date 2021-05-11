@@ -40,7 +40,16 @@ const daysToCreate = [
         "date": "2021-09-20",
         "mood": "3",
         "note": "Nothing here"
-    }
+    },
+    {
+        "mood": "3",
+        "note": "Nothing here"
+    },
+    {
+        "date": "2021-06-18",
+        "mood": "3",
+        "note": "Nothing here"
+    },
 ]
 
 beforeEach(async () => {
@@ -72,14 +81,24 @@ describe('create day tests', () => {
         .expect(401)
     })
 
-    test('you cannot create a day with valid input', async() => {
+    test('you cannot create a day without a date', async() => {
 
         const response = await api
         .post('/days/create')
         .set('Authorization', jwtToken)
-        .send(daysToCreate[0])
-        .expect(201)
-        expect(response.body).toStrictEqual({ 'message': 'Day created successfully' })
+        .send(daysToCreate[1])
+        .expect(400)
+        expect(response.body).toStrictEqual({ 'message': 'No date provided' })
+    })
+
+    test('you cannot create a if there is one with the same date', async() => {
+
+        const response = await api
+        .post('/days/create')
+        .set('Authorization', jwtToken)
+        .send(daysToCreate[2])
+        .expect(400)
+        expect(response.body).toStrictEqual({ 'message': 'There is already a Day with that date' })
     })
 })
 
