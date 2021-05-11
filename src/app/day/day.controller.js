@@ -89,12 +89,80 @@ async function getByYear(req, res) {
 
     res.status(200).json(days)
 }
+
 // Update Day
+async function updateDay(req, res) {
+    let day
+
+    const date = req.params.date
+    if (date == null) return res.status(400).json({ message: 'No date provided' })
+
+    try {
+        day = await Day.findOne({
+            userEmail: req.email,
+            date: new Date(date),
+        })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+    if (day == null) return res.status(404).json({ message: 'Day not found' })
+
+    if (req.body.mood != null) {
+        day.mood = req.body.mood
+    }
+
+    if (req.body.emotions != null) {
+        day.emotions = req.body.emotions
+    }
+
+    if (req.body.note != null) {
+        day.note = req.body.note
+    }
+
+    try {
+        await day.updateOne((err) => {
+            if (err) {
+                return res.status(500).json({ message: err.message })
+            }
+
+            res.status(200).json({ message: 'Day updated' })
+        })
+    } catch (err) {
+        return res.status(400).json({ message: err.message })
+    }
+}
+
 
 // Delete Day
+async function deleteDay(req, res) {
+    let day
+
+    const date = req.params.date
+    if (date == null) return res.status(400).json({ message: 'No date provided' })
+
+    try {
+        day = await Day.findOne({
+            userEmail: req.email,
+            date: new Date(date),
+        })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+    if (day == null) return res.status(404).json({ message: 'Day not found' })
+
+    try {
+        await day.delete()
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+
+    res.status(200).json({ message: 'Day Deleted' })
+}
 
 module.exports = {
     createDay,
     getByDate,
     getByYear,
+    updateDay,
+    deleteDay,
 }
