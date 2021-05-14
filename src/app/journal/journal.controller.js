@@ -1,15 +1,95 @@
 const Journal = require('./journal.model')
 
 // Create Journal
+async function createJournal(req, res) {
+    let journal
+    
+    const date = req.body.date
+    if (date == null) return res.status(400).json({ message: 'No date provided' })
+
+    try {
+        if (journal = await Journal.findOne({
+            'userEmail': req.email,
+            'date': new Date(date),
+        }) != null) return res.status(400).json({ message: 'There is already a Journal with that date' })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+
+    journal = new Journal({
+        userEmail: req.email,
+        date: new Date(date),
+        schedule : {
+            work: req.body.schedule.work,
+            leisure: req.body.schedule.leisure,
+            sleep: req.body.schedule.sleep,
+            personalDevelopment: req.body.schedule.personalDevelopment
+        },
+        isProductive: req.body.isProductive,
+        goodSleep: req.body.goodSleep,
+        workout: req.body.workout
+    })
+
+    try {
+        await journal.save((err) => {
+            if (err) {
+                return res.status(500).json({ message: err.message })
+            }
+
+            res.status(201).json({ message: 'Journal created successfully'})
+        })
+    } catch (err) {
+        return res.status(400).json({ message: err.message})
+    }
+}
 
 // Get By Date
+async function getByDate(req, res) {
+    let journal
+    let date = req.params.date
+
+    try {
+        journal = await Journal.findOne({
+            userEmail: req.email,
+            date: new Date(date),
+        })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+
+    if (journal == null) return res.status(404).json({ message: 'Journal not found' })
+
+    res.status(200).json(journal)
+}
 
 // Get By Week
 
 // Get By Month
 
 // Get By Year
+async function getByYear(req, res) {
+    let journals
+    const year = req.params.year
+
+    try {
+        journals = await Journal.find({
+            userEmail: req.email,
+            date: {
+                $gte: new Date(`${year}/01/01`),
+                $lt: new Date(`${year}/12/31`).setHours(23),
+            },
+        })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+
+    if (journals.length == 0) return res.status(404).json({ message: 'Journals not found' })
+
+    res.status(200).json(journals)
+}
 
 module.exports = {
-    
+    createJournal,
+    getByDate,
+    getByYear,
 }
