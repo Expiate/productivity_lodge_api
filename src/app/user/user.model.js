@@ -38,13 +38,6 @@ const userSchema = new mongoose.Schema({
                 '#4caf50',
             ]
         },
-        topics: [String],
-        hours_max: {
-            type: Number,
-            min: 0,
-            max: 24,
-            default: 16,
-        },
     },
 })
 
