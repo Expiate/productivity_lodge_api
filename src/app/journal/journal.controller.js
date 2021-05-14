@@ -25,8 +25,8 @@ async function createJournal(req, res) {
             sleep: req.body.schedule.sleep,
             personalDevelopment: req.body.schedule.personalDevelopment
         },
-        isProductive: req.body.isProductive,
-        goodSleep: req.body.goodSleep,
+        productivityLevel: req.body.productivityLevel,
+        sleepQuality: req.body.sleepQuality,
         workout: req.body.workout
     })
 

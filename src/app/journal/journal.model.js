@@ -27,12 +27,12 @@ const journalSchema = new mongoose.Schema({
             required: true
         }
     },
-    isProductive: {
-        type: Boolean,
+    productivityLevel: {
+        type: Number,
         required: true
     },
-    goodSleep: {
-        type: Boolean,
+    sleepQuality: {
+        type: Number,
         required: true
     },
     workout: {
