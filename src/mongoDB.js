@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
-const { DATABASE_URL, DATABASE_URL_TEST, NODE_ENV } = process.env
-const connectionString = NODE_ENV === 'test' ? DATABASE_URL_TEST : DATABASE_URL
+const { DATABASE_URI, DATABASE_URI_TEST, NODE_ENV } = process.env
+const connectionString = NODE_ENV === 'test' ? DATABASE_URI_TEST : DATABASE_URI
 
 /**
  * This Function creates a connection to MongoDB
