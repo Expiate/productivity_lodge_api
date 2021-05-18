@@ -43,6 +43,51 @@ async function createJournal(req, res) {
     }
 }
 
+async function updateJournal(req, res) {
+    let journal
+    
+    const date = req.body.date
+    if (date == null) return res.status(400).json({ message: 'No date provided' })
+
+    try {
+        journal = await Journal.findOne({
+            'userEmail': req.email,
+            'date': new Date(date),
+        })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+
+    if(journal == null) return res.status(404).json({ message: 'Journal not found' })
+
+    journal.userEmail = req.email
+    journal.date = new Date(date)
+
+    let schedule = {
+        work: req.body.schedule.work,
+        leisure: req.body.schedule.leisure,
+        sleep: req.body.schedule.sleep,
+        personalDevelopment: req.body.schedule.personalDevelopment
+    }
+    
+    journal.schedule = schedule
+    journal.productivityLevel = req.body.productivityLevel
+    journal.sleepQuality = req.body.sleepQuality
+    journal.workout = req.body.workout
+
+    try {
+        await journal.save((err) => {
+            if (err) {
+                return res.status(500).json({ message: err.message })
+            }
+
+            res.status(201).json({ message: 'Journal updated'})
+        })
+    } catch (err) {
+        return res.status(400).json({ message: err.message })
+    }
+}
+
 // Get By Date
 async function getByDate(req, res) {
     let journal
@@ -90,6 +135,7 @@ async function getByYear(req, res) {
 
 module.exports = {
     createJournal,
+    updateJournal,
     getByDate,
     getByYear,
 }
