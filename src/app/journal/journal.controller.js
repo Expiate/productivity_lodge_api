@@ -69,7 +69,7 @@ async function updateJournal(req, res) {
         sleep: req.body.schedule.sleep,
         personalDevelopment: req.body.schedule.personalDevelopment
     }
-    
+
     journal.schedule = schedule
     journal.productivityLevel = req.body.productivityLevel
     journal.sleepQuality = req.body.sleepQuality
@@ -81,7 +81,7 @@ async function updateJournal(req, res) {
                 return res.status(500).json({ message: err.message })
             }
 
-            res.status(201).json({ message: 'Journal updated'})
+            res.status(200).json({ message: 'Journal updated'})
         })
     } catch (err) {
         return res.status(400).json({ message: err.message })
