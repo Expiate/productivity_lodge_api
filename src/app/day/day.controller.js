@@ -87,6 +87,29 @@ async function getByYear(req, res) {
     res.status(200).json(days)
 }
 
+// Get By Month
+async function getByMonth(req, res) {
+    let days
+    const year = req.params.year
+    const month = req.params.month
+
+    try {
+        days = await Day.find({
+            userEmail: req.email,
+            date: {
+                $gte: new Date(`${year}/${month}/01`),
+                $lt: new Date(year, month , 0).setHours(23),
+            },
+        })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+
+    if (days.length == 0) return res.status(404).json({ message: 'Days not found' })
+
+    res.status(200).json(days)
+}
+
 // Update Day
 async function updateDay(req, res) {
     let day
@@ -157,6 +180,7 @@ async function deleteDay(req, res) {
 module.exports = {
     createDay,
     getByDate,
+    getByMonth,
     getByYear,
     updateDay,
     deleteDay,
