@@ -17,6 +17,10 @@ app.use(express.json())
 require('./app/common/middleware/middlewareLoader').loadMiddleware(app)
 require('./routes').loadRoutes(app)
 
-const server = app.listen(process.env.PORT, console.log('Server Started'))
+const server = app.listen(process.env.PORT, () => {
+    console.log('||================||')
+    console.log('-- Server Started --')
+    console.log('-- PORT: ' + process.env.PORT)
+})
 
 module.exports = { app, server }
