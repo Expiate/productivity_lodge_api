@@ -23,6 +23,7 @@ async function getByRole(req, res) {
                 username: user.username,
                 email: user.email,
                 preferences: user.preferences,
+                registerDate: user.registerDate
             }
             res.status(200).json(userData)
         } catch (err) {
