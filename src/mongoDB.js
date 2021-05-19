@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const { DATABASE_URI, DATABASE_URI_TEST, NODE_ENV } = process.env
+const { DATABASE_URI, DATABASE_URL_TEST, NODE_ENV } = process.env
 const connectionString = NODE_ENV === 'test' ? DATABASE_URL_TEST : DATABASE_URI
 
 /**

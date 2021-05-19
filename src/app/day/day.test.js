@@ -128,6 +128,20 @@ describe('get days tests', () => {
         .set('Authorization', jwtToken)
         .expect(404)
     })
+
+    test('you can get days using valid year and month', async () => {
+        const response = await api
+            .get('/days/getDays/2021/06')
+            .set('Authorization', jwtToken)
+            .expect(200)
+    })
+
+    test('you cannot get days without valid year and month', async () => {
+        const response = await api
+            .get('/days/getDays/4050/12')
+            .set('Authorization', jwtToken)
+            .expect(404)
+    })
 })
 
 describe('update day tests', () => {
