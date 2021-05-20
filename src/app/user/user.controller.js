@@ -51,7 +51,32 @@ async function changePassword(req, res) {
     console.log()
 }
 
+async function changeColors(req, res) {
+    let user
+    try {
+        user = await User.findOne({ email: req.email })
+        if (user == null) return res.status(404).json({ message: 'User not found' })
+    } catch (err) {
+        res.status(500).json({ message: err.mensaje })
+    }
+
+    user.preferences.colors = req.body.colors
+
+    try {
+        await user.save((err) => {
+            if (err) {
+                return res.status(500).json({ message: err.message })
+            }
+
+            res.status(200).json({ message: 'User updated'})
+        })
+    } catch (err) {
+        return res.status(400).json({ message: err.message })
+    }
+}
+
 module.exports = {
     getByRole,
     deleteUser,
+    changeColors,
 }

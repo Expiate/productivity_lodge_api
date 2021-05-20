@@ -14,4 +14,6 @@ router.use('/login', logRouter)
 // Get All Users Route
 router.route('/').get(userController.getByRole)
 
+router.route('/changeColors').patch(userController.changeColors)
+
 module.exports = router
