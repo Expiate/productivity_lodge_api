@@ -1,5 +1,34 @@
 const nodemailer = require('nodemailer');
+const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
 
+const oauth2Client = new OAuth2(
+    "265519864433-mir3m4e61mf8huijcdnqi82775sth68i.apps.googleusercontent.com", // ClientID
+    "4-Icdqo8M3Vc3M9MQkF0xLK-", // Client Secret
+    "https://developers.google.com/oauthplayground" // Redirect URL
+);
+
+oauth2Client.setCredentials({
+    refresh_token: "1//04_d3vxfCkW09CgYIARAAGAQSNwF-L9IrTLejr2HglxXXpPQa6EhxHfNEHSWXyETPZyW8TBvU48EOeUxXNRUxwzDy1CxRVry-zC0"
+});
+const accessToken = oauth2Client.getAccessToken()
+
+const smtpTransport = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        type: "OAuth2",
+        user: process.env.MAIL_USER, 
+        clientId: "265519864433-mir3m4e61mf8huijcdnqi82775sth68i.apps.googleusercontent.com",
+        clientSecret: "4-Icdqo8M3Vc3M9MQkF0xLK-",
+        refreshToken: "1//04_d3vxfCkW09CgYIARAAGAQSNwF-L9IrTLejr2HglxXXpPQa6EhxHfNEHSWXyETPZyW8TBvU48EOeUxXNRUxwzDy1CxRVry-zC0",
+        accessToken: accessToken
+    },
+    tls: {
+        rejectUnauthorized: false
+    }
+});
+
+/*
 const transport = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
@@ -9,6 +38,7 @@ const transport = nodemailer.createTransport({
         pass: process.env.MAIL_PASS,
     },
 });
+*/
 
 /**
  * This Function will use the Email specified in the transport constant to send a confirmation email
@@ -20,14 +50,19 @@ const transport = nodemailer.createTransport({
  * @param {*} confirmationCode
  */
 module.exports.sendConfirmationEmail = (name, email, confirmationCode) => {
-    transport.sendMail({
+    const mailOptions = {
         from: process.env.MAIL_USER,
         to: email,
         subject: 'Please confirm your account',
+        generateTextFromHTML: true,
         html: `<h1>Email Confirmation</h1>
-            <h2>Hello ${name}</h2>
-            <p>Thank you for using Productivity Lodge. Please confirm your email by clicking on the following link</p>
-            <p>${confirmationCode}</p>
-            </div>`,
-    }).catch((err) => console.log(err));
+        <h2>Hello ${name}</h2>
+        <p>Thank you for using Productivity Lodge. Please confirm your email by clicking on the following link</p>
+        <p>${confirmationCode}</p>
+        </div>`
+    };
+    smtpTransport.sendMail(mailOptions, (error, response) => {
+        error ? console.log(error) : console.log(response);
+        smtpTransport.close();
+    });
 };
