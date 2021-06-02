@@ -1,7 +1,9 @@
 const nodemailer = require('nodemailer');
 
 const transport = nodemailer.createTransport({
-    service: 'Outlook',
+    host: "smtp.example.com",
+    port: 465,
+    secure: true,
     auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
