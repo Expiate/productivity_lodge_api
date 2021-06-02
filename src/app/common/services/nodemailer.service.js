@@ -9,7 +9,7 @@ const oauth2Client = new OAuth2(
 );
 
 oauth2Client.setCredentials({
-    refresh_token: "1//04_d3vxfCkW09CgYIARAAGAQSNwF-L9IrTLejr2HglxXXpPQa6EhxHfNEHSWXyETPZyW8TBvU48EOeUxXNRUxwzDy1CxRVry-zC0"
+    refresh_token: process.env.GOOGLE_REFRESH_TOKEN
 });
 const accessToken = oauth2Client.getAccessToken()
 
@@ -18,9 +18,9 @@ const smtpTransport = nodemailer.createTransport({
     auth: {
         type: "OAuth2",
         user: process.env.MAIL_USER, 
-        clientId: "265519864433-mir3m4e61mf8huijcdnqi82775sth68i.apps.googleusercontent.com",
-        clientSecret: "4-Icdqo8M3Vc3M9MQkF0xLK-",
-        refreshToken: "1//04_d3vxfCkW09CgYIARAAGAQSNwF-L9IrTLejr2HglxXXpPQa6EhxHfNEHSWXyETPZyW8TBvU48EOeUxXNRUxwzDy1CxRVry-zC0",
+        clientId: process.env.GOOGLE_CLOUD_CLIENT,
+        clientSecret: process.env.GOOGLE_CLOUD_SECRET,
+        refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
         accessToken: accessToken
     },
     tls: {
