@@ -14,9 +14,7 @@ oauth2Client.setCredentials({
 const accessToken = oauth2Client.getAccessToken()
 
 const smtpTransport = nodemailer.createTransport({
-    service: "smtp.gmail.com",
-    port: 587,
-    secure: false,
+    service: "gmail",
     auth: {
         type: "OAuth2",
         user: process.env.MAIL_USER, 
