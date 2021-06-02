@@ -2,16 +2,26 @@ const nodemailer = require('nodemailer');
 const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 
-const oauth2Client = new OAuth2(
-    process.env.GOOGLE_CLOUD_CLIENT, // ClientID
-    process.env.GOOGLE_CLOUD_SECRET, // Client Secret
-    "https://developers.google.com/oauthplayground" // Redirect URL
-);
+var oauth2Client
+var accessToken
 
-oauth2Client.setCredentials({
-    refresh_token: process.env.GOOGLE_REFRESH_TOKEN
-});
-const accessToken = oauth2Client.getAccessToken()
+(async function () {
+    try {
+        oauth2Client = new OAuth2(
+            process.env.GOOGLE_CLOUD_CLIENT, // ClientID
+            process.env.GOOGLE_CLOUD_SECRET, // Client Secret
+            "https://developers.google.com/oauthplayground" // Redirect URL
+        );
+        
+        oauth2Client.setCredentials({
+            refresh_token: process.env.GOOGLE_REFRESH_TOKEN
+        });
+    
+        accessToken = await oauth2Client.getAccessToken()
+    } catch (err) {
+        console.log(err)
+    }
+})();
 
 const smtpTransport = nodemailer.createTransport({
     service: "gmail",
