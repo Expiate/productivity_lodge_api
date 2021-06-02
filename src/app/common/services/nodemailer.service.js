@@ -3,8 +3,8 @@ const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
 
 const oauth2Client = new OAuth2(
-    "265519864433-mir3m4e61mf8huijcdnqi82775sth68i.apps.googleusercontent.com", // ClientID
-    "4-Icdqo8M3Vc3M9MQkF0xLK-", // Client Secret
+    process.env.GOOGLE_CLOUD_CLIENT, // ClientID
+    process.env.GOOGLE_CLOUD_SECRET, // Client Secret
     "https://developers.google.com/oauthplayground" // Redirect URL
 );
 
