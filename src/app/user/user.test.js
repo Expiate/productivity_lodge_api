@@ -10,21 +10,21 @@ const api = supertest(app)
     if you are willing to change a test you should check what
     initial data it uses to work
 */
-const initialUser3UnhashedPassword = 'supermega15'
-const initialUser4UnhashedPassword = 'supermega16'
+const initialUser3UnhashedPassword = 'abc12345'
+const initialUser4UnhashedPassword = 'abc45678'
 
 const initialUsers = [
     {
         username: 'Expiate',
         email: 'tuetano32@gmail.com',
-        password: 'supermega14',
+        password: 'ddd55567',
         confirmationCode: '1',
         status: 'Pending',
     },
     {
         username: 'Network',
         email: 'networkbet4@gmail.com',
-        password: 'supermega15',
+        password: 'hhhh78999',
         confirmationCode: '2',
         status: 'Active',
     },
@@ -48,12 +48,12 @@ const usersToSignup = [
     {
         username: 'Jose Luis',
         email: 'joseludev@gmail.com',
-        password: 'supermega14',
+        password: 'yyyy56788',
     },
     {
         username: 'Expiate',
         email: 'tuetano32@gmail.com',
-        password: 'supermega15',
+        password: 'jjjj78999',
     },
 ]
 
